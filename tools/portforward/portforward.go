@@ -346,6 +346,7 @@ func (pf *PortForwarder) handleConnection(conn net.Conn, port ForwardedPort) {
 		runtime.HandleError(fmt.Errorf("error creating error stream for port %d -> %d: %v", port.Local, port.Remote, err))
 		return
 	}
+	// defer pf.streamConn.RemoveStreams(errorStream)
 	// we're not writing to this stream
 	errorStream.Close()
 
@@ -368,6 +369,7 @@ func (pf *PortForwarder) handleConnection(conn net.Conn, port ForwardedPort) {
 		runtime.HandleError(fmt.Errorf("error creating forwarding stream for port %d -> %d: %v", port.Local, port.Remote, err))
 		return
 	}
+	// defer pf.streamConn.RemoveStreams(dataStream)
 
 	localError := make(chan struct{})
 	remoteDone := make(chan struct{})
